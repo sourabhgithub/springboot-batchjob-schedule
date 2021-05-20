@@ -1,0 +1,9 @@
+Hi [(${name})],
+
+Batch JOB DETAILS.
+ID: [(${id})]
+STATUS: [(${status})]
+DATE: [(${date})]
+
+Regards,
+  Spring Batch Team

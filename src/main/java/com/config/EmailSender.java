@@ -16,17 +16,20 @@ public class EmailSender {
     private JavaMailSender emailSender;
     @Autowired
     private SpringTemplateEngine templateEngine;
-
-    public void sendSimpleMessage(String from ,String to, String subject) {
+    @Autowired
+    private MailConfiguration mailConfig;
+    public void sendSimpleMessage(Long jobId, String jobStatus) {
         final Context ctx = new Context();
-        ctx.setVariable("name", "recipientName");
+        ctx.setVariable("name", "Team");
         ctx.setVariable("date", new Date());
-        ctx.setVariable("senderName","senderName");
+        ctx.setVariable("senderName",mailConfig.getForm());
+        ctx.setVariable("id",jobId);
+        ctx.setVariable("status",jobStatus);
 
         SimpleMailMessage message = new SimpleMailMessage();
-        message.setFrom(from);
-        message.setTo(to);
-        message.setSubject(subject);
+        message.setFrom(mailConfig.getForm());
+        message.setTo(mailConfig.getTo());
+        message.setSubject(mailConfig.getSubject()+jobId + " JOB STATUS: "+jobStatus);
         String text = templateEngine.process(TEMPLATE_FILE, ctx);
         message.setText(text);
         emailSender.send(message);

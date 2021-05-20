@@ -12,18 +12,11 @@ public class JobCompletionListener extends JobExecutionListenerSupport {
 
     @Autowired
     private EmailSender emailSender;
-    @Autowired
-    private MailConfiguration mailConfig;
 
     @Override
     public void afterJob(JobExecution jobExecution) {
-        System.out.println("JOB ID = " + jobExecution.getJobId());
-        if (jobExecution.getStatus() == BatchStatus.COMPLETED) {
-            System.out.println("BATCH JOB COMPLETED SUCCESSFULLY");
-        } else if (jobExecution.getStatus() == BatchStatus.FAILED) {
-            System.out.println("BATCH JOB FAILED...!!!");
-            emailSender.sendSimpleMessage(mailConfig.getForm(), mailConfig.getTo(), mailConfig.getSubject());
+        System.out.println("JOB ID = " + jobExecution.getJobId() +
+                " JOB STATUS ="+ jobExecution.getStatus());
+            emailSender.sendSimpleMessage(jobExecution.getJobId(),jobExecution.getStatus().toString());
         }
     }
-
-}
